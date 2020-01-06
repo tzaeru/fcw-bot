@@ -102,3 +102,6 @@ ENV/
 
 *.*~
 config.py
+
+games_db.json
+db.json
