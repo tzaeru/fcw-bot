@@ -1,0 +1,1 @@
+nodemon --ignore '*.json' --exec python3.7 bot.py

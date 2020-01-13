@@ -11,6 +11,7 @@ from tinydb import TinyDB, Query
 import random
 import discord
 import asyncio
+import urllib.request 
 
 games_db = TinyDB('games_db.json')
 
@@ -58,7 +59,18 @@ class MyClient(discord.Client):
             await asyncio.sleep(10) # task runs every 60 seconds
 
     async def on_message(self, message):
-        return
+
+        # We check for specific roles on the message author before allowing
+        # any of the admin-like commands below. The IDs are magic to roles
+        # of Freeciv-web Discord.
+        for role in message.author.roles:
+            if (role.id == 466569078140698624
+                or role.id == 663815632667803648
+                or role.id == 428834617810878466
+                or role.id == 466898941485776905):
+                break
+        else:
+            return
 
         if message.content.startswith('!deleteme'):
             msg = await bot.send_message(message.channel, 'I will delete myself now...')
@@ -93,6 +105,12 @@ class MyClient(discord.Client):
                     if any(role.name == game_name for role in roles):
                         await message.channel.send("Error: Existing role with that name found.")
                         return
+
+                    # All checks complete, proceed!
+                    # Get the attached LT file
+                    print(message.attachments[0].url)
+                    await message.attachments[0].save(config.publite2_path + message.attachments[0].filename)
+                    return
 
                     channel = await message.guild.create_text_channel(game_name, category=game_category)
                     role = await message.guild.create_role(name=game_name)
