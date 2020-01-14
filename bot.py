@@ -11,7 +11,8 @@ from tinydb import TinyDB, Query
 import random
 import discord
 import asyncio
-import urllib.request 
+import urllib.request
+from os import path
 
 games_db = TinyDB('games_db.json')
 
@@ -108,9 +109,19 @@ class MyClient(discord.Client):
 
                     # All checks complete, proceed!
                     # Get the attached LT file
-                    print(message.attachments[0].url)
-                    await message.attachments[0].save(config.publite2_path + message.attachments[0].filename)
-                    return
+                    filename = message.attachments[0].filename
+                    file_path = config.publite2_path + filename
+                    if filename.split(".")[-1] != "serv":
+                        await message.channel.send("Error: Extension for serer configs needs to be .serv.")
+                        return
+                    if not filename.startswith("LT_"):
+                        await message.channel.send("Error: .serv files need to start with LT_.")
+                        return
+                    if not path.exists(file_path):
+                        await message.attachments[0].save(file_path)
+                    else:
+                        await message.channel.send("Error: Server file with the same name already exists.")
+                        return
 
                     channel = await message.guild.create_text_channel(game_name, category=game_category)
                     role = await message.guild.create_role(name=game_name)
