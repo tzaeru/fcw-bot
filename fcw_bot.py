@@ -2,6 +2,7 @@ import asyncio
 import discord
 from discord.ext import commands, tasks
 from tinydb import TinyDB, Query
+from os import path
 
 import config
 import fcw_web_utils
