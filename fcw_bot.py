@@ -14,7 +14,7 @@ allowed_roles = (
     663815632667803648,
     428834617810878466,
     466898941485776905)
-
+    
 class FcwBot(commands.Cog):
 
     def __init__(self, bot):
@@ -53,7 +53,7 @@ class FcwBot(commands.Cog):
         return game
 
     @commands.command(help='Creates a new game.')
-   # @commands.has_any_role(*allowed_roles)
+    @commands.has_any_role(*allowed_roles)
     async def create(self, ctx, *, game_name):
         # Look for a game information category.
         game_category = None
@@ -115,7 +115,7 @@ class FcwBot(commands.Cog):
         await ctx.send(role.id)
 
     @commands.command(help='Deletes a game.')
-    @commands.has_any_role(allowed_roles)
+    @commands.has_any_role(*allowed_roles)
     async def delete(self, ctx, *, game_name):   
         game = self.get_game(game_name)
         if game is None:
@@ -137,7 +137,6 @@ class FcwBot(commands.Cog):
         await ctx.send(game)
 
     @commands.command(help='Adds you to a game.')
-    @commands.has_any_role(*allowed_roles)
     async def join(self, ctx, *, game_name):
         game = self.get_game(game_name)
         if game is None:
@@ -149,7 +148,6 @@ class FcwBot(commands.Cog):
         await ctx.send(f'You\'ve been added to {game_name}!')
 
     @commands.command(help='Removes you from a game.')
-    @commands.has_any_role(*allowed_roles)
     async def leave(self, ctx, *, game_name):
         game = self.get_game(game_name)
         if game is None:
