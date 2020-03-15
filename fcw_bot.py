@@ -27,7 +27,7 @@ class FcwBot(commands.Cog):
 
     async def game_query(self):
         await self.bot.wait_until_ready()
-        channel = self.bot.get_channel(666394570430611476)
+        channel = self.bot.get_channel(541201440010666026)
         while not self.bot.is_closed():
             current_games = fcw_web_utils.get_game_list()
             # Iterate through each running game, and check whether the turn
@@ -113,7 +113,7 @@ class FcwBot(commands.Cog):
             })
 
         # Send the id of the new role back.
-        await ctx.send(role.id)
+        await ctx.send("Game created! To get turn change notifications, players may do !join " + str(name_game))
 
     @commands.command(help='Deletes a game.')
     @commands.has_any_role(*allowed_roles)
